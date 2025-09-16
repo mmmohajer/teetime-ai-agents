@@ -1,0 +1,52 @@
+general: {
+  debug_level = 4
+  admin_secret = "janusoverlord"
+}
+
+certificates: {
+  # Janus will auto-generate self-signed certs if these are not provided
+  # cert_pem = "/path/to/certificate.pem"
+  # cert_key = "/path/to/key.pem"
+}
+
+media: {
+  # Limit RTP ports to a predictable range
+  rtp_port_range = "10000-10200"
+}
+
+nat: {
+  # Public STUN server
+  # stun_server = "stun.l.google.com"
+  # stun_port   = 19302
+
+  # Your TURN (coturn) server inside Docker
+  turn_server = "coturn"
+  turn_port   = 3478
+  turn_type   = "udp"
+  turn_user   = "USER_NAME"
+  turn_pwd    = "PASSWORD"
+
+  # Replace with your actual PUBLIC IP (from `curl ifconfig.me`)
+  nat_1_1_mapping = "IP_ADDRESS_OR_DOMAIN"
+
+  full_trickle = true
+  
+  # Optional: keep private candidates too
+  # keep_private_host = true
+}
+
+plugins: {
+  # leave defaults (all plugins enabled)
+}
+
+transports: {
+  # leave defaults, Janus will load libjanus_websockets.so
+}
+
+loggers: {
+  # leave defaults
+}
+
+events: {
+  # disabled by default
+}

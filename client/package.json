@@ -1,0 +1,43 @@
+{
+  "name": "techtipsbymoh",
+  "version": "9.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build-patch": "grunt bump-only:patch && npm run build",
+    "build-minor": "grunt bump-only:minor && npm run build",
+    "build-major": "grunt bump-only:major && npm run build",
+    "generate-sitemap": "next-sitemap",
+    "generate:video-sitemap": "node generate-video-sitemap.js"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "2.5.1",
+    "@tinymce/tinymce-react": "5.1.1",
+    "axios": "1.8.4",
+    "dayjs": "1.11.13",
+    "dompurify": "3.2.4",
+    "next": "15.5.0",
+    "next-sitemap": "4.2.3",
+    "react": "18.3.1",
+    "react-datepicker": "8.4.0",
+    "react-dom": "18.3.1",
+    "react-image-crop": "11.0.10",
+    "react-redux": "9.2.0",
+    "react-markdown": "10.1.0"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "6.2.1",
+    "@fortawesome/free-brands-svg-icons": "6.7.2",
+    "@fortawesome/free-solid-svg-icons": "6.1.1",
+    "@fortawesome/react-fontawesome": "0.2.0",
+    "classnames": "2.5.1",
+    "eslint": "9.33.0",
+    "eslint-config-next": "15.1.6",
+    "grunt": "1.6.1",
+    "grunt-bump": "0.8.0",
+    "sass": "1.84.0"
+  }
+}

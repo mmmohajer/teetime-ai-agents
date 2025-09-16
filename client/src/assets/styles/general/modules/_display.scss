@@ -1,0 +1,88 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+.flex {
+  display: flex;
+
+  @each $Grow in $flexGrow {
+    &--gr--#{$Grow} {
+      flex-grow: $Grow;
+    }
+  }
+
+  &--jc--start {
+    justify-content: flex-start;
+  }
+
+  &--jc--end {
+    justify-content: flex-end;
+  }
+
+  &--jc--center {
+    justify-content: center;
+  }
+
+  &--jc--between {
+    justify-content: space-between;
+  }
+
+  &--jc--around {
+    justify-content: space-around;
+  }
+
+  &--jc--evenly {
+    justify-content: space-evenly;
+  }
+
+  &--ai--start {
+    align-items: flex-start;
+  }
+
+  &--ai--end {
+    align-items: flex-end;
+  }
+
+  &--ai--center {
+    align-items: center;
+  }
+
+  &--dir--row {
+    flex-direction: row;
+  }
+
+  &--dir--col {
+    flex-direction: column;
+  }
+
+  &--dir--row--reverse {
+    flex-direction: row-reverse;
+  }
+
+  &--dir--col--reverse {
+    flex-direction: column-reverse;
+  }
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
+  &--grow--1 {
+    flex-grow: 1;
+  }
+
+  &--shrink--0 {
+    flex-shrink: 0;
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.no-display {
+  display: none;
+}

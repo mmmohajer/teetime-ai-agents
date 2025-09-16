@@ -1,0 +1,8 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $opa in $opacityArray {
+  .op-#{$opa} {
+    opacity: math.div($opa, 100);
+  }
+}

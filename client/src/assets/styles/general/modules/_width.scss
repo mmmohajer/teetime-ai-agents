@@ -1,0 +1,42 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $val in $widthPercentages {
+  .min-width-per-#{$val} {
+    min-width: math.percentage(math.div($val, 100));
+  }
+}
+
+@each $val in $widthPx {
+  .min-width-px-#{$val} {
+    min-width: #{$val}px;
+  }
+}
+
+@each $val in $widthPercentages {
+  .width-per-#{$val} {
+    width: math.percentage(math.div($val, 100));
+  }
+}
+
+@each $val in $widthPx {
+  .width-px-#{$val} {
+    width: #{$val}px;
+  }
+}
+
+@each $val in $widthPercentages {
+  .max-width-per-#{$val} {
+    max-width: math.percentage(math.div($val, 100));
+  }
+}
+
+@each $val in $widthPx {
+  .max-width-px-#{$val} {
+    max-width: #{$val}px;
+  }
+}
+
+.width-inherit {
+  width: inherit;
+}

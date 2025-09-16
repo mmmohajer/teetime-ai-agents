@@ -1,0 +1,88 @@
+// .customDatePickerWidth,
+// .customDatePickerWidth > div.react-datepicker-wrapper,
+// .customDatePickerWidth
+//   > div
+//   > div.react-datepicker__input-container
+//   .customDatePickerWidth
+//   > div
+//   > div.react-datepicker__input-container
+//   input {
+//   width: 100%;
+// }
+
+// [class^='react-datepicker'] {
+//   width: 100% !important;
+// }
+
+// Apply full width to the container elements
+.react-datepicker,
+.react-datepicker__month-container,
+.react-datepicker__header {
+  width: 100% !important;
+}
+
+.react-datepicker__day-names {
+  width: 100%;
+
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 0.166rem;
+}
+
+// Ensure day elements stay in grid format
+.react-datepicker__day,
+.react-datepicker__day-name {
+  width: auto; // Ensures individual days don’t stretch
+  flex: 1; // Distributes each day evenly in the row
+  text-align: center;
+  color: black !important;
+  font-weight: bold;
+}
+
+// Style for each week to display as a row
+.react-datepicker__week {
+  display: flex; // Ensures each week is a row
+  justify-content: space-between;
+}
+
+// Style for selected day
+.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+.react-datepicker__header {
+  background-color: white !important;
+}
+
+.react-datepicker__navigation {
+  padding-top: 8px !important;
+}
+
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
+  border-color: black !important;
+}
+
+// .holiday {
+//   color: #b0b0b0 !important; // Custom color for disabled dates
+//   background-color: #f0f0f0 !important; // Optional: Change background color
+//   text-decoration: line-through; // Optional: Add line-through effect
+//   pointer-events: none; // Ensures disabled dates cannot be clicked
+//   opacity: 0.5; // Optional: Adjust opacity for a faded look
+// }
+
+.react-datepicker__day--disabled {
+  color: #b0b0b0 !important; // Custom color for disabled dates
+  background-color: #f0f0f0 !important; // Optional: Change background color
+  text-decoration: line-through; // Optional: Add line-through effect
+  pointer-events: none; // Ensures disabled dates cannot be clicked
+  opacity: 0.5; // Optional: Adjust opacity for a faded look
+}
+
+.react-datepicker-popper {
+  z-index: 10000000 !important;
+}

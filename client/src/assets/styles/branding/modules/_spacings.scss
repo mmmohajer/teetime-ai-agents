@@ -1,0 +1,65 @@
+@use "../base/helpers" as *;
+
+@each $name, $val in $brandingSpacings {
+  .p-all-#{$name} {
+    padding: $val;
+  }
+
+  .p-l-#{$name} {
+    padding-left: $val;
+  }
+
+  .p-r-#{$name} {
+    padding-right: $val;
+  }
+
+  .p-t-#{$name} {
+    padding-top: $val;
+  }
+
+  .p-b-#{$name} {
+    padding-bottom: $val;
+  }
+
+  .p-x-#{$name} {
+    padding-left: $val;
+    padding-right: $val;
+  }
+
+  .p-y-#{$name} {
+    padding-top: $val;
+    padding-bottom: $val;
+  }
+}
+
+@each $name, $val in $brandingSpacings {
+  .m-all-#{$name} {
+    margin: $val;
+  }
+
+  .m-l-#{$name} {
+    margin-left: $val;
+  }
+
+  .m-r-#{$name} {
+    margin-right: $val;
+  }
+
+  .m-t-#{$name} {
+    margin-top: $val;
+  }
+
+  .m-b-#{$name} {
+    margin-bottom: $val;
+  }
+
+  .m-x-#{$name} {
+    margin-left: $val;
+    margin-right: $val;
+  }
+
+  .m-y-#{$name} {
+    margin-top: $val;
+    margin-bottom: $val;
+  }
+}

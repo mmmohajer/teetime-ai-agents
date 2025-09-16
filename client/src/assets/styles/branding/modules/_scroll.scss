@@ -1,0 +1,21 @@
+@use "sass:math";
+@use "sass:map";
+@use "../base/helpers" as *;
+
+.scroll-type-one {
+  &::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+    background-color: aqua;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px gray;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: blue;
+    border-radius: 10px;
+  }
+}

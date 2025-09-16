@@ -1,0 +1,19 @@
+@use "variables" as *;
+
+@mixin atSmall {
+  @media (min-width: $atSmall) {
+    @content;
+  }
+}
+
+@mixin atMedium {
+  @media (min-width: $atMedium) {
+    @content;
+  }
+}
+
+@mixin atLarge {
+  @media (min-width: $atLarge) {
+    @content;
+  }
+}

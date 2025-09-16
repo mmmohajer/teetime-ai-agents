@@ -1,0 +1,9 @@
+.scale {
+  display: inline-block;
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.2);
+  }
+}

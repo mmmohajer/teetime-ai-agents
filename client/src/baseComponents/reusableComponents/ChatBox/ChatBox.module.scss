@@ -1,0 +1,70 @@
+.microphoneContainer {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.microphoneContainer.recording {
+  animation: pulse 1.2s infinite;
+  box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+.botMessageContainer {
+  line-height: 2rem;
+
+  p {
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 18px;
+  }
+  ul {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+    list-style: none;
+  }
+  ul li {
+    position: relative;
+    padding-left: 1.2em;
+    margin-bottom: 0.7em;
+    color: #2d3a4a;
+    font-size: 17px;
+  }
+  ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.5em;
+    height: 0.5em;
+    background: linear-gradient(135deg, #007bff 60%, #00c6ff 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 4px #007bff44;
+  }
+}

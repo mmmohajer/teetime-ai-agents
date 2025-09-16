@@ -1,0 +1,26 @@
+@use "sass:map";
+@use "@/styles/branding/base/helpers" as *;
+
+%cropper {
+  max-width: 100%;
+}
+
+.cropperContainer {
+  @extend %cropper;
+}
+
+.reactCropper {
+  @extend %cropper;
+  position: relative !important;
+}
+
+.cropper {
+  @extend %cropper;
+  position: relative !important;
+}
+
+.canvasContainer {
+  position: absolute;
+  visibility: hidden;
+  z-index: -10;
+}

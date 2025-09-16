@@ -1,0 +1,28 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $size in $fontPxArray {
+  .f-s-px-#{$size} {
+    font-size: #{$size}px;
+  }
+}
+
+@each $size in $fontRemArray {
+  .f-s-qr-rem-#{$size} {
+    font-size: #{math.div($size, 4)}rem;
+  }
+}
+
+@each $weight in $fontWeightArray {
+  .f-w-#{$weight} {
+    font-weight: $weight;
+  }
+}
+
+.f-b {
+  font-weight: bold;
+}
+
+.f-i {
+  font-style: italic;
+}

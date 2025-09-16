@@ -1,0 +1,117 @@
+@use "sass:map";
+@use "helpers" as *;
+
+%fontclass {
+  font-family: "Open Sans", sans-serif;
+  line-height: 2rem;
+  color: black;
+  font-weight: 500;
+  font-size: map.get($brandingFontSizes, "regular-xs");
+  @include atSmall {
+    font-size: map.get($brandingFontSizes, "regular-sm");
+  }
+
+  @include atMedium {
+    font-size: map.get($brandingFontSizes, "regular-md");
+  }
+
+  @include atLarge {
+    font-size: map.get($brandingFontSizes, "regular-lg");
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  @extend %fontclass;
+
+  background-color: white;
+  overflow-x: hidden;
+  color: black;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: attr(width) / attr(height);
+}
+
+a {
+  all: unset;
+  cursor: pointer;
+}
+
+textarea,
+button {
+  @extend %fontclass;
+}
+
+textarea {
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  outline: none;
+  border: none;
+}
+
+p {
+  width: 100%;
+}
+
+pre {
+  word-break: break-all;
+  background: #282c34;
+  color: #f8f8f2;
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1em 0;
+}
+
+code {
+  word-break: break-all;
+  font-family: "Fira Mono", "Menlo", "Monaco", "Consolas", monospace;
+  background: #282c34;
+  color: #ffd866;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+// -------------------------------------------
+
+.global- {
+  &container {
+    width: 100%;
+    max-width: $maxContainerWidth;
+    margin: 0 auto;
+  }
+
+  &min-full-vh {
+    min-height: 100vh;
+  }
+
+  &transition-one {
+    transition: all 0.3s ease-in-out;
+  }
+}

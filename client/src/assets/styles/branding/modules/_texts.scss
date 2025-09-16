@@ -1,0 +1,28 @@
+@use "sass:math";
+@use "sass:map";
+@use "../base/helpers" as *;
+
+@each $name, $val in $brandingFontSizes {
+  $className: "f-s-" + $name;
+  .#{$className} {
+    font-size: $val;
+  }
+}
+
+@each $category, $key in $brandingFontCategories {
+  .f-s-#{$category} {
+    font-size: map.get($brandingFontSizes, "#{$key}-xs");
+
+    @include atSmall {
+      font-size: map.get($brandingFontSizes, "#{$key}-sm");
+    }
+
+    @include atMedium {
+      font-size: map.get($brandingFontSizes, "#{$key}-md");
+    }
+
+    @include atLarge {
+      font-size: map.get($brandingFontSizes, "#{$key}-lg");
+    }
+  }
+}

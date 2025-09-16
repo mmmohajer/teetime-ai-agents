@@ -1,0 +1,404 @@
+  - target: 20000
+    published: 20000
+    protocol: udp
+    mode: host
+  - target: 20001
+    published: 20001
+    protocol: udp
+    mode: host
+  - target: 20002
+    published: 20002
+    protocol: udp
+    mode: host
+  - target: 20003
+    published: 20003
+    protocol: udp
+    mode: host
+  - target: 20004
+    published: 20004
+    protocol: udp
+    mode: host
+  - target: 20005
+    published: 20005
+    protocol: udp
+    mode: host
+  - target: 20006
+    published: 20006
+    protocol: udp
+    mode: host
+  - target: 20007
+    published: 20007
+    protocol: udp
+    mode: host
+  - target: 20008
+    published: 20008
+    protocol: udp
+    mode: host
+  - target: 20009
+    published: 20009
+    protocol: udp
+    mode: host
+  - target: 20010
+    published: 20010
+    protocol: udp
+    mode: host
+  - target: 20011
+    published: 20011
+    protocol: udp
+    mode: host
+  - target: 20012
+    published: 20012
+    protocol: udp
+    mode: host
+  - target: 20013
+    published: 20013
+    protocol: udp
+    mode: host
+  - target: 20014
+    published: 20014
+    protocol: udp
+    mode: host
+  - target: 20015
+    published: 20015
+    protocol: udp
+    mode: host
+  - target: 20016
+    published: 20016
+    protocol: udp
+    mode: host
+  - target: 20017
+    published: 20017
+    protocol: udp
+    mode: host
+  - target: 20018
+    published: 20018
+    protocol: udp
+    mode: host
+  - target: 20019
+    published: 20019
+    protocol: udp
+    mode: host
+  - target: 20020
+    published: 20020
+    protocol: udp
+    mode: host
+  - target: 20021
+    published: 20021
+    protocol: udp
+    mode: host
+  - target: 20022
+    published: 20022
+    protocol: udp
+    mode: host
+  - target: 20023
+    published: 20023
+    protocol: udp
+    mode: host
+  - target: 20024
+    published: 20024
+    protocol: udp
+    mode: host
+  - target: 20025
+    published: 20025
+    protocol: udp
+    mode: host
+  - target: 20026
+    published: 20026
+    protocol: udp
+    mode: host
+  - target: 20027
+    published: 20027
+    protocol: udp
+    mode: host
+  - target: 20028
+    published: 20028
+    protocol: udp
+    mode: host
+  - target: 20029
+    published: 20029
+    protocol: udp
+    mode: host
+  - target: 20030
+    published: 20030
+    protocol: udp
+    mode: host
+  - target: 20031
+    published: 20031
+    protocol: udp
+    mode: host
+  - target: 20032
+    published: 20032
+    protocol: udp
+    mode: host
+  - target: 20033
+    published: 20033
+    protocol: udp
+    mode: host
+  - target: 20034
+    published: 20034
+    protocol: udp
+    mode: host
+  - target: 20035
+    published: 20035
+    protocol: udp
+    mode: host
+  - target: 20036
+    published: 20036
+    protocol: udp
+    mode: host
+  - target: 20037
+    published: 20037
+    protocol: udp
+    mode: host
+  - target: 20038
+    published: 20038
+    protocol: udp
+    mode: host
+  - target: 20039
+    published: 20039
+    protocol: udp
+    mode: host
+  - target: 20040
+    published: 20040
+    protocol: udp
+    mode: host
+  - target: 20041
+    published: 20041
+    protocol: udp
+    mode: host
+  - target: 20042
+    published: 20042
+    protocol: udp
+    mode: host
+  - target: 20043
+    published: 20043
+    protocol: udp
+    mode: host
+  - target: 20044
+    published: 20044
+    protocol: udp
+    mode: host
+  - target: 20045
+    published: 20045
+    protocol: udp
+    mode: host
+  - target: 20046
+    published: 20046
+    protocol: udp
+    mode: host
+  - target: 20047
+    published: 20047
+    protocol: udp
+    mode: host
+  - target: 20048
+    published: 20048
+    protocol: udp
+    mode: host
+  - target: 20049
+    published: 20049
+    protocol: udp
+    mode: host
+  - target: 20050
+    published: 20050
+    protocol: udp
+    mode: host
+  - target: 20051
+    published: 20051
+    protocol: udp
+    mode: host
+  - target: 20052
+    published: 20052
+    protocol: udp
+    mode: host
+  - target: 20053
+    published: 20053
+    protocol: udp
+    mode: host
+  - target: 20054
+    published: 20054
+    protocol: udp
+    mode: host
+  - target: 20055
+    published: 20055
+    protocol: udp
+    mode: host
+  - target: 20056
+    published: 20056
+    protocol: udp
+    mode: host
+  - target: 20057
+    published: 20057
+    protocol: udp
+    mode: host
+  - target: 20058
+    published: 20058
+    protocol: udp
+    mode: host
+  - target: 20059
+    published: 20059
+    protocol: udp
+    mode: host
+  - target: 20060
+    published: 20060
+    protocol: udp
+    mode: host
+  - target: 20061
+    published: 20061
+    protocol: udp
+    mode: host
+  - target: 20062
+    published: 20062
+    protocol: udp
+    mode: host
+  - target: 20063
+    published: 20063
+    protocol: udp
+    mode: host
+  - target: 20064
+    published: 20064
+    protocol: udp
+    mode: host
+  - target: 20065
+    published: 20065
+    protocol: udp
+    mode: host
+  - target: 20066
+    published: 20066
+    protocol: udp
+    mode: host
+  - target: 20067
+    published: 20067
+    protocol: udp
+    mode: host
+  - target: 20068
+    published: 20068
+    protocol: udp
+    mode: host
+  - target: 20069
+    published: 20069
+    protocol: udp
+    mode: host
+  - target: 20070
+    published: 20070
+    protocol: udp
+    mode: host
+  - target: 20071
+    published: 20071
+    protocol: udp
+    mode: host
+  - target: 20072
+    published: 20072
+    protocol: udp
+    mode: host
+  - target: 20073
+    published: 20073
+    protocol: udp
+    mode: host
+  - target: 20074
+    published: 20074
+    protocol: udp
+    mode: host
+  - target: 20075
+    published: 20075
+    protocol: udp
+    mode: host
+  - target: 20076
+    published: 20076
+    protocol: udp
+    mode: host
+  - target: 20077
+    published: 20077
+    protocol: udp
+    mode: host
+  - target: 20078
+    published: 20078
+    protocol: udp
+    mode: host
+  - target: 20079
+    published: 20079
+    protocol: udp
+    mode: host
+  - target: 20080
+    published: 20080
+    protocol: udp
+    mode: host
+  - target: 20081
+    published: 20081
+    protocol: udp
+    mode: host
+  - target: 20082
+    published: 20082
+    protocol: udp
+    mode: host
+  - target: 20083
+    published: 20083
+    protocol: udp
+    mode: host
+  - target: 20084
+    published: 20084
+    protocol: udp
+    mode: host
+  - target: 20085
+    published: 20085
+    protocol: udp
+    mode: host
+  - target: 20086
+    published: 20086
+    protocol: udp
+    mode: host
+  - target: 20087
+    published: 20087
+    protocol: udp
+    mode: host
+  - target: 20088
+    published: 20088
+    protocol: udp
+    mode: host
+  - target: 20089
+    published: 20089
+    protocol: udp
+    mode: host
+  - target: 20090
+    published: 20090
+    protocol: udp
+    mode: host
+  - target: 20091
+    published: 20091
+    protocol: udp
+    mode: host
+  - target: 20092
+    published: 20092
+    protocol: udp
+    mode: host
+  - target: 20093
+    published: 20093
+    protocol: udp
+    mode: host
+  - target: 20094
+    published: 20094
+    protocol: udp
+    mode: host
+  - target: 20095
+    published: 20095
+    protocol: udp
+    mode: host
+  - target: 20096
+    published: 20096
+    protocol: udp
+    mode: host
+  - target: 20097
+    published: 20097
+    protocol: udp
+    mode: host
+  - target: 20098
+    published: 20098
+    protocol: udp
+    mode: host
+  - target: 20099
+    published: 20099
+    protocol: udp
+    mode: host
+  - target: 20100
+    published: 20100
+    protocol: udp
+    mode: host

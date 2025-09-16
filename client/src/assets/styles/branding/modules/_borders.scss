@@ -1,0 +1,20 @@
+@use "sass:math";
+@use "../base/helpers" as *;
+
+@each $name, $color in $brandingColors {
+  $className: "br-" + $name;
+  .#{$className} {
+    border-color: $color;
+  }
+
+  .#{$className}-on-hover:hover {
+    border-color: $color;
+  }
+}
+
+@each $name, $val in $brandingBorderRads {
+  $className: "br-rad-" + $name;
+  .#{$className} {
+    border-radius: $val;
+  }
+}

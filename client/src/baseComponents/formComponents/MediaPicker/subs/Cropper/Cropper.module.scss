@@ -1,0 +1,8 @@
+@use "sass:map";
+@use "@/styles/branding/base/helpers" as *;
+
+.canvasContainer {
+  position: absolute;
+  visibility: hidden;
+  z-index: -10;
+}

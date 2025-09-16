@@ -1,0 +1,199 @@
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./api/vol:/vol/static
+      - ./volume_data/to_be_served:/to_be_served
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    depends_on:
+      - client
+      - api
+  client:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
+    depends_on:
+      - api
+
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/usr/src/app
+      - ./volume_data/websocket_tmp:/websocket_tmp
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+    command: ./docker-entrypoint-dev.sh
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./api:/usr/src/app
+      - ./volume_data/websocket_tmp:/websocket_tmp
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+    command: celery -A config worker -l info
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery-beat:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./api:/usr/src/app
+      - ./volume_data/websocket_tmp:/websocket_tmp
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+    command: celery -A config beat -l info
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery-flower:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./api:/usr/src/app
+      - ./volume_data/websocket_tmp:/websocket_tmp
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+    command: celery -A config flower --url_prefix=/flower
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  channels:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./api:/usr/src/app
+      - ./volume_data/websocket_tmp:/websocket_tmp
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+    # command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    command: ./run-daphne-dev.sh
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1-p2
+    ports:
+      - "6432:6432"
+    env_file:
+      - ./secrets/pgbouncer/.env
+    depends_on:
+      - db
+
+  db:
+    restart: always
+    image: ankane/pgvector:v0.5.1
+    env_file:
+      - ./secrets/db/.env
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./db_backups:/db_backups
+
+  redis:
+    image: redis:7.0.4-alpine3.16
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - rediscelerydata:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-cache:
+    image: redis:7.0.4-alpine3.16
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - rediscachedata:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+  coturn:
+    image: coturn/coturn
+    restart: always
+    command: >
+      turnserver -n
+      --lt-cred-mech
+      --realm=${COTURN_REALM}
+      --user=${COTURN_USER}:${COTURN_PASSWORD}
+      --external-ip=${COTURN_EXTERNAL_IP}
+      --log-file=stdout
+      --min-port=20000
+      --max-port=20100
+      --no-stdout-log
+    # Uncomment these for production inside command above:
+    # --cert=/etc/coturn/certs/fullchain.pem
+    # --pkey=/etc/coturn/certs/privkey.pem
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "5349:5349/tcp"
+      - "20000-20100:20000-20100/udp"
+    # volumes:
+    #   - /etc/letsencrypt/live/turn.myapp.com:/etc/coturn/certs:ro  # <-- mount certs in production
+
+  janus:
+    build:
+      dockerfile: Dockerfile
+      context: ./janus
+    restart: always
+    ports:
+      - "8188:8188"
+      - "8088:8088"
+      - "10000-10200:10000-10200/udp"
+    volumes:
+      - ./janus/janus.jcfg:/usr/local/etc/janus/janus.jcfg:ro
+      - ./janus/janus.transport.websockets.jcfg:/usr/local/etc/janus/janus.transport.websockets.jcfg:ro
+
+volumes:
+  dbdata:
+  rediscachedata:
+  rediscelerydata:

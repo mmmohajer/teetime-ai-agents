@@ -1,0 +1,36 @@
+# PYTHON & DJANGO
+venv
+db.sqlite3
+__pycache__
+.DS_Store
+api/vol
+test-blogs
+celerybeat-schedule
+
+# Front End
+node_modules
+.next
+next.config.js
+
+# Config Files/Folders
+certbot
+init-letsencrypt.sh
+/nginx/configs/default.conf
+.env
+volume_data
+docker-compose-swarm-tmp.yml
+.ssh
+robots.txt
+sitemap-*.xml
+sitemap.xml
+db_backups
+backup_db_swarm.sh
+.htpasswd
+secret_vars.sh
+redis.conf
+secrets/third_party_apis
+api.http
+
+secrets/secret_files
+
+janus/janus.jcfg

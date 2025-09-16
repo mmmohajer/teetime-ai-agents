@@ -1,0 +1,31 @@
+@use "../base/helpers" as *;
+
+@each $name, $color in $brandingColors {
+  $className: "text-" + $name;
+  .#{$className} {
+    color: $color;
+  }
+
+  .#{$className}-on-hover:hover {
+    color: $color;
+  }
+}
+
+@each $name, $color in $brandingColors {
+  $className: "bg-" + $name;
+  .#{$className} {
+    background-color: $color;
+  }
+
+  .#{$className}-on-hover:hover {
+    background-color: $color;
+  }
+}
+
+.bg-transparent {
+  background-color: transparent;
+
+  &-on-hover:hover {
+    background-color: transparent;
+  }
+}

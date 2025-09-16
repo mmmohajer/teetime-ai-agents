@@ -1,0 +1,185 @@
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5349:5349"
+    volumes:
+      - ./volume_data/django_static:/vol/static
+      - ./volume_data/to_be_served:/to_be_served
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    depends_on:
+      - client
+      - api
+  certbot:
+    restart: always
+    image: certbot/certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  client:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    command: npm start
+    depends_on:
+      - api
+
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: ./docker-entrypoint-prod.sh
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config worker -l info
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery-beat:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config beat -l info
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  celery-flower:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config flower --url_prefix=/flower --basic_auth=${CELERY_FLOWER_USER}:${CELERY_FLOWER_PASSWORD}
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  channels:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    depends_on:
+      - db
+      - redis
+      - redis-cache
+      - pgbouncer
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1-p2
+    env_file:
+      - ./secrets/pgbouncer/.env
+    depends_on:
+      - db
+
+  db:
+    restart: always
+    image: ankane/pgvector:v0.5.1
+    env_file:
+      - ./secrets/db/.env
+    volumes:
+      - ./volume_data/pgdata:/var/lib/postgresql/data
+      - ./db_backups:/db_backups
+
+  redis:
+    image: redis:7.0.4-alpine3.16
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./volume_data/redis_celery_data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  redis-cache:
+    image: redis:7.0.4-alpine3.16
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./volume_data/redis_celery_data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  coturn:
+    image: coturn/coturn
+    restart: always
+    command: >
+      turnserver -n
+      --lt-cred-mech
+      --realm=${COTURN_REALM}
+      --user=${COTURN_USER}:${COTURN_PASSWORD}
+      --external-ip=${COTURN_EXTERNAL_IP}
+      --log-file=stdout
+      --min-port=20000
+      --max-port=20100
+      --no-stdout-log
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "20000-20100:20000-20100/udp"
+
+  janus:
+    build:
+      dockerfile: Dockerfile
+      context: ./janus
+    restart: always
+    ports:
+      - "10000-10200:10000-10200/udp"
+    volumes:
+      - ./janus/janus.jcfg:/usr/local/etc/janus/janus.jcfg:ro
+      - ./janus/janus.transport.websockets.jcfg:/usr/local/etc/janus/janus.transport.websockets.jcfg:ro

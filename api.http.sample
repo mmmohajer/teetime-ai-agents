@@ -1,0 +1,101 @@
+@DOMAIN=https://makeclient.ngrok.io
+@REGISTER_TOKEN=REGISTER_TOKEN
+@ACCESS_TOKEN=ACCESS_TOKEN
+@REFRESH_TOKEN=REFRESH_TOKEN
+@GOOGLE_AUTH_CODE=GOOGLE_AUTH_CODE
+@GOOGLE_AUTH_ACCESS_TOKEN=GOOGLE_AUTH_ACCESS_TOKEN
+@GOOGLE_AUTH_ID_TOKEN=GOOGLE_AUTH_ID_TOKEN
+
+# ****************************************************************
+# ----------------- BEGINNING OF USERS -----------------
+
+### Add a User
+POST  {{DOMAIN}}/api/users/
+Content-Type: application/json
+
+{
+    "first_name": "Mohammad",
+    "last_name": "Mohajer",
+    "email": "mohammad@iswad.tech",
+    "password": "khfukrgbiewefergre",
+    "redirect_url": "https://makeclient.ngrok.io"
+}
+
+### Activate a User
+PUT  {{DOMAIN}}/api/user-activate-account/
+Content-Type: application/json
+
+{
+    "token": "{{REGISTER_TOKEN}}"
+}
+
+### Send a Password Reset Email
+POST  {{DOMAIN}}/api/user-forgot-password/
+Content-Type: application/json
+
+{
+    "email": "mohammad@iswad.tech"
+}
+
+### Send a Password Reset Email
+POST  {{DOMAIN}}/api/user-forgot-password/
+Content-Type: application/json
+
+{
+    "email": "mohammad@iswad.tech"
+}
+
+### Reset Password
+POST  {{DOMAIN}}/api/user-reset-password/
+Content-Type: application/json
+
+{
+    "token": "{{REGISTER_TOKEN}}",
+    "email": "mohammad@iswad.tech",
+    "password": "testPassword!@#"
+}
+
+### Login User
+POST  {{DOMAIN}}/api/user-login/
+Content-Type: application/json
+
+{
+    "email": "mohammad@iswad.tech",
+    "password": "testPassword!@#"
+}
+
+### Logout User
+POST  {{DOMAIN}}/api/user-logout/
+Content-Type: application/json
+
+{
+    "refresh_token": "{{REFRESH_TOKEN}}"
+}
+
+### Google Auth Read Code
+POST  {{DOMAIN}}/api/user-auth-with-google/
+Content-Type: application/json
+
+{
+    "code": "{{GOOGLE_AUTH_CODE}}"
+}
+
+### Login/Register with google
+POST  {{DOMAIN}}/api/user-login-with-google/
+Content-Type: application/json
+
+{
+    "id_token": "{{GOOGLE_AUTH_ID_TOKEN}}",
+    "access_token": "{{GOOGLE_AUTH_ACCESS_TOKEN}}"
+}
+
+# ----------------- END OF USERS -----------------
+# ****************************************************************
+# ----------------- BEGINNING OF PROFILE -----------------
+### Get profile info
+GET  {{DOMAIN}}/api/profile/
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+# ----------------- END OF PROFILE -----------------
+# ****************************************************************

@@ -1,0 +1,72 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $space in $spaceamounts {
+  .m-all-#{$space} {
+    margin: #{$space}px;
+  }
+
+  .m-t-#{$space} {
+    margin-top: #{$space}px;
+  }
+
+  .m-b-#{$space} {
+    margin-bottom: #{$space}px;
+  }
+
+  .m-r-#{$space} {
+    margin-right: #{$space}px;
+  }
+
+  .m-l-#{$space} {
+    margin-left: #{$space}px;
+  }
+
+  .m-y-#{$space} {
+    margin-top: #{$space}px;
+    margin-bottom: #{$space}px;
+  }
+
+  .m-x-#{$space} {
+    margin-left: 0 #{$space}px;
+    margin-right: 0 #{$space}px;
+  }
+
+  .p-all-#{$space} {
+    padding: #{$space}px;
+  }
+
+  .p-t-#{$space} {
+    padding-top: #{$space}px;
+  }
+
+  .p-b-#{$space} {
+    padding-bottom: #{$space}px;
+  }
+
+  .p-r-#{$space} {
+    padding-right: #{$space}px;
+  }
+
+  .p-l-#{$space} {
+    padding-left: #{$space}px;
+  }
+
+  .p-y-#{$space} {
+    padding-top: #{$space}px;
+    padding-bottom: #{$space}px;
+  }
+
+  .p-x-#{$space} {
+    padding-left: #{$space}px;
+    padding-right: #{$space}px;
+  }
+}
+
+.m-l-auto {
+  margin-left: auto;
+}
+
+.m-r-auto {
+  margin-right: auto;
+}

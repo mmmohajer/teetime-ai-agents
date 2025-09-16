@@ -1,0 +1,225 @@
+services:
+  nginx:
+    restart: always
+    image: ${NGINX_REPO}:${NGINX_VERSION}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5349:5349"
+    volumes:
+      - ./volume_data/django_static:/vol/static
+      - ./volume_data/to_be_served:/to_be_served
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  client:
+    restart: always
+    image: ${CLIENT_REPO}:${CLIENT_VERSION}
+    command: npm start
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  api:
+    restart: always
+    image: ${API_REPO}:${API_VERSION}
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: ./docker-entrypoint-prod.sh
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  celery:
+    restart: always
+    image: ${API_REPO}:${API_VERSION}
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config worker -l info
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  celery-beat:
+    restart: always
+    image: ${API_REPO}:${API_VERSION}
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config beat -l info
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  celery-flower:
+    restart: always
+    image: ${API_REPO}:${API_VERSION}
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: celery -A config flower --url_prefix=/flower --basic_auth=${CELERY_FLOWER_USER}:${CELERY_FLOWER_PASSWORD}
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  channels:
+    restart: always
+    image: ${API_REPO}:${API_VERSION}
+    env_file:
+      - ./secrets/api/.env
+    volumes:
+      - ./volume_data/django_static:/usr/src/app/vol
+      - ./volume_data/websocket_tmp:/websocket_tmp
+    command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  pgbouncer:
+    restart: always
+    image: edoburu/pgbouncer:v1.23.1-p2
+    env_file:
+      - ./secrets/pgbouncer/.env
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  db:
+    restart: always
+    image: ankane/pgvector:v0.5.1
+    env_file:
+      - ./secrets/db/.env
+    volumes:
+      - ./volume_data/pgdata:/var/lib/postgresql/data
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    restart: always
+    image: redis:7.0.4-alpine3.16
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./volume_data/redis_celery_data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  redis-cache:
+    restart: always
+    image: redis:7.0.4-alpine3.16
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./volume_data/redis_celery_data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  certbot:
+    image: certbot/dns-cloudflare
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./secrets/secret_files/cloudflare.ini:/etc/letsencrypt/cloudflare.ini:ro
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do sleep 12h; certbot renew --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini --quiet; done'
+    networks:
+      - appnetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  coturn:
+    image: coturn/coturn
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "20000-20100:20000-20100/udp"
+    networks:
+      - appnetwork
+    command:
+      [
+        "turnserver",
+        "-n",
+        "--lt-cred-mech",
+        "--realm=${COTURN_REALM}",
+        "--user=${COTURN_USER}:${COTURN_PASSWORD}",
+        "--external-ip=${COTURN_EXTERNAL_IP}",
+        "--log-file=stdout",
+        "--min-port=20000",
+        "--max-port=20100",
+        "--no-stdout-log",
+      ]
+  janus:
+    image: ${JANUS_REPO}:${JANUS_VERSION}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - appnetwork
+    ports:
+      - "10000-10200:10000-10200/udp"
+    volumes:
+      - ./janus/janus.jcfg:/usr/local/etc/janus/janus.jcfg:ro
+      - ./janus/janus.transport.websockets.jcfg:/usr/local/etc/janus/janus.transport.websockets.jcfg:ro
+
+networks:
+  appnetwork:
+    driver: overlay

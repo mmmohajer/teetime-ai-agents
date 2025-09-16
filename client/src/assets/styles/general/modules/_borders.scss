@@ -1,0 +1,51 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $radius in $borderRadius {
+  .br-rad-px-#{$radius} {
+    border-radius: #{$radius}px;
+  }
+}
+
+@each $radius in $borderPercentRadius {
+  .br-rad-per-#{$radius} {
+    border-radius: math.percentage(math.div($radius, 100));
+  }
+}
+
+@each $thickness in $borderThickness {
+  @each $Styles in $borderStyles {
+    @each $direction in $directions {
+      .br-#{$direction}\-#{$Styles}\-#{$thickness} {
+        border-#{$direction}: #{$Styles} #{$thickness}px;
+      }
+    }
+  }
+}
+
+@each $thickness in $borderThickness {
+  @each $Styles in $borderStyles {
+    .br-all-#{$Styles}\-#{$thickness} {
+      border: #{$Styles} #{$thickness}px;
+    }
+  }
+}
+
+@each $name, $color in $colors {
+  $className: "br-" + $name;
+  .#{$className} {
+    border-color: $color;
+  }
+
+  .#{$className}-on-hover:hover {
+    border-color: $color;
+  }
+}
+
+.br-none {
+  border: none;
+
+  &-on-hover:hover {
+    border: none;
+  }
+}

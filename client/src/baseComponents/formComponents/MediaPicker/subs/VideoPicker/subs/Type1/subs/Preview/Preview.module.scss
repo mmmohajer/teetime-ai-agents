@@ -1,0 +1,19 @@
+@use "sass:map";
+@use "@/styles/branding/base/helpers" as *;
+
+.imagePreviewContainer {
+  background-color: white;
+  overflow: hidden;
+  width: 90px;
+  height: 60px;
+  // border-radius: 50%;
+
+  & img {
+    border-radius: 10px;
+  }
+}
+
+.previewContainer {
+  border: solid 1px map.get($brandingColors, "theme-two");
+  border-radius: 5px;
+}

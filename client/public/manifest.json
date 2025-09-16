@@ -1,0 +1,21 @@
+{
+  "name": "GrowTogether",
+  "short_name": "TechTipsByMoh",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "description": "An AI-powered app for developer growth and mentorship.",
+  "icons": [
+    {
+      "src": "/images/favicon/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/favicon/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

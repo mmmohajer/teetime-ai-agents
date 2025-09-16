@@ -1,0 +1,98 @@
+@use "sass:math";
+@use "../base/helpers.scss" as *;
+
+@each $height in $boxHeighs {
+  .min-height-px-#{$height} {
+    min-height: #{$height}px;
+  }
+}
+
+@each $height in $boxHeighs {
+  .height-px-#{$height} {
+    height: #{$height}px;
+  }
+}
+
+@each $height in $boxHeighs {
+  .max-height-px-#{$height} {
+    max-height: #{$height}px;
+  }
+}
+
+.min-height-vh {
+  &-full {
+    min-height: 100vh;
+  }
+
+  &-half {
+    min-height: 50vh;
+  }
+
+  &-one-fourth {
+    min-height: 25vh;
+  }
+
+  &-three-fourth {
+    min-height: 75vh;
+  }
+
+  &-one-third {
+    min-height: 33.33333333vh;
+  }
+
+  &-two-third {
+    min-height: 66.66666666vh;
+  }
+}
+
+.height-vh {
+  &-full {
+    height: 100vh;
+  }
+
+  &-half {
+    height: 50vh;
+  }
+
+  &-one-fourth {
+    height: 25vh;
+  }
+
+  &-three-fourth {
+    height: 75vh;
+  }
+
+  &-one-third {
+    height: 33.33333333vh;
+  }
+
+  &-two-third {
+    height: 66.66666666vh;
+  }
+}
+
+.max-height-vh {
+  &-full {
+    max-height: 100vh;
+  }
+
+  &-half {
+    max-height: 50vh;
+  }
+
+  &-one-fourth {
+    max-height: 25vh;
+  }
+
+  &-three-fourth {
+    max-height: 75vh;
+  }
+
+  &-one-third {
+    max-height: 33.33333333vh;
+  }
+
+  &-two-third {
+    max-height: 66.66666666vh;
+  }
+}
