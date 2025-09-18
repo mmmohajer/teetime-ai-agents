@@ -13,7 +13,7 @@ from ai.utils.chunk_manager import ChunkPipeline
 from ai.tasks import apply_cost_task
 
 class OCRManager:
-    def __init__(self, google_cloud_project_id, google_cloud_location, google_cloud_processor_id, cur_user=None):
+    def __init__(self, google_cloud_project_id, google_cloud_location, google_cloud_processor_id, cur_users=[]):
         """
         Initializes the OCRManager instance with Google Cloud configuration.
 
@@ -28,12 +28,14 @@ class OCRManager:
         self.GOOGLE_CLOUD_PROJECT_ID = google_cloud_project_id
         self.GOOGLE_CLOUD_LOCATION = google_cloud_location
         self.GOOGLE_CLOUD_PROCESSOR_ID = google_cloud_processor_id
+        self.cur_users = cur_users
         self.cost = 0
-    
-    def _apply_cost(self, cost):
+
+    def _apply_cost(self, cost, service):
         self.cost += cost
-        if self.cur_user:
-            apply_cost_task.delay(self.cur_user.id, cost)
+        if self.cur_users:
+            user_ids = [user.id for user in self.cur_users]
+        apply_cost_task.delay(user_ids, cost, service)
 
     def _png_bytes_to_pdf_bytes(self, png_bytes):
         """
@@ -239,7 +241,7 @@ class OCRManager:
             except Exception as e:
                 print(f"Error in Document AI OCR: {e}")
                 return None
-            self._apply_cost(num_pages * cost_per_page)
+            self._apply_cost(cost=num_pages * cost_per_page, service="GOOGLE_OCR")
             return "\n".join(html_outputs)
         except Exception as e:
             print(f"Error in Document AI OCR: {e}")

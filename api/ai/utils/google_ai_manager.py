@@ -14,7 +14,7 @@ from ai.utils.ai_manager import BaseAIManager
 from ai.utils.audio_manager import AudioManager
 
 class GoogleAIManager(BaseAIManager):
-    def __init__(self, api_key=None, cur_user=None):
+    def __init__(self, api_key=None, cur_users=[]):
         """
         Initialize the GoogleAIManager.
 
@@ -25,7 +25,7 @@ class GoogleAIManager(BaseAIManager):
         Returns:
             None
         """
-        super().__init__(ai_type="google", cur_user=cur_user)
+        super().__init__(ai_type="google", cur_users=cur_users)
         if api_key:
             configure(api_key=api_key)
         self.speech_client = speech.SpeechClient()
@@ -135,7 +135,7 @@ class GoogleAIManager(BaseAIManager):
         input_token_count = len(enc.encode(use_prompt))
         output_token_count = len(enc.encode(response.text))
         total_cost = (input_token_count / 1000) * self.GOOGLE_AI_PRICING["gemini-pro"]["input_per_1k_token"] + (output_token_count / 1000) * self.GOOGLE_AI_PRICING["gemini-pro"]["output_per_1k_token"]
-        self._apply_cost(total_cost)
+        self._apply_cost(cost=total_cost, service="GOOGLE_COMPLETION")
         self.clear_messages()
         return response.text
     
@@ -187,7 +187,7 @@ class GoogleAIManager(BaseAIManager):
         duration_minutes = (duration_seconds / 60) if duration_seconds else 0
         price_per_minute = self.GOOGLE_AI_PRICING["speech-to-text"]["audio_stt_per_1_minute"]
         cost = duration_minutes * price_per_minute
-        self._apply_cost(cost)
+        self._apply_cost(cost=cost, service="GOOGLE_STT")
         results = []
         for result in response.results:
             alt = result.alternatives[0]
@@ -241,7 +241,7 @@ class GoogleAIManager(BaseAIManager):
         else:
             price_per_1k = self.GOOGLE_AI_PRICING["text-to-speech"]["tts_standard_per_1k_char"]
         cost = (char_count / 1000) * price_per_1k
-        self._apply_cost(cost)
+        self._apply_cost(cost=cost, service="GOOGLE_TTS")
         return response.audio_content
     
     def advanced_tts(
@@ -320,5 +320,5 @@ class GoogleAIManager(BaseAIManager):
         labels = response.label_annotations
         descriptions = [label.description for label in labels]
         cost = self.GOOGLE_AI_PRICING["vision"]["image_per_1_image"]
-        self._apply_cost(cost)
+        self._apply_cost(cost=cost, service="GOOGLE_IMAGE")
         return ", ".join(descriptions)

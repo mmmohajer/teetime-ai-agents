@@ -220,6 +220,21 @@ services:
       - ./janus/janus.jcfg:/usr/local/etc/janus/janus.jcfg:ro
       - ./janus/janus.transport.websockets.jcfg:/usr/local/etc/janus/janus.transport.websockets.jcfg:ro
 
+  scraper:
+    image: ${SCRAPER_REPO}:${SCRAPER_VERSION}
+    env_file:
+      - ./secrets/scraper/.env
+    volumes:
+      - ./scraper:/usr/src/app
+    command: sh -c "while true; do echo alive; sleep 60; done"
+    networks:
+      - appnetwork
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
 networks:
   appnetwork:
     driver: overlay

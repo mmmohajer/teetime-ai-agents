@@ -9,18 +9,20 @@ class BaseAIManager:
     Base class for AI managers.
     ai_type (str): The type of AI being used (e.g., "open_ai"); options are "open_ai", "google".
     """
-    def __init__(self, ai_type="open_ai", cur_user=None):
+    def __init__(self, ai_type="open_ai", cur_users=[]):
         self.messages = []
         self.prompt = ""
         self.cost = 0
         self.ai_type = ai_type
-        self.cur_user = cur_user
+        self.cur_users = cur_users
 
-    def _apply_cost(self, cost):
+    def _apply_cost(self, cost, service):
         self.cost += cost
-        if self.cur_user:
-            apply_cost_task.delay(self.cur_user.id, cost)
-    
+        user_ids = []
+        if self.cur_users:
+            user_ids = [user.id for user in self.cur_users]
+        apply_cost_task.delay(user_ids, cost, service)
+
     def _clean_code_block(self, response_text):
         pattern = r"^```(?:json|html)?\n?(.*)```$"
         match = re.match(pattern, response_text.strip(), re.DOTALL)

@@ -61,7 +61,7 @@ services:
       - ./api:/usr/src/app
       - ./volume_data/websocket_tmp:/websocket_tmp
       - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
-    command: celery -A config worker -l info
+    command: watchfiles "celery -A config worker -l info" /usr/src/app
     depends_on:
       - db
       - redis
@@ -78,7 +78,7 @@ services:
       - ./api:/usr/src/app
       - ./volume_data/websocket_tmp:/websocket_tmp
       - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
-    command: celery -A config beat -l info
+    command: watchfiles "celery -A config beat -l info" /usr/src/app
     depends_on:
       - db
       - redis
@@ -96,7 +96,7 @@ services:
       - ./api:/usr/src/app
       - ./volume_data/websocket_tmp:/websocket_tmp
       - ./secrets/secret_files/cred.json:/run/secrets/cred.json:ro
-    command: celery -A config flower --url_prefix=/flower
+    command: watchfiles "celery -A config flower --url_prefix=/flower" /usr/src/app
     depends_on:
       - db
       - redis
@@ -192,6 +192,20 @@ services:
     volumes:
       - ./janus/janus.jcfg:/usr/local/etc/janus/janus.jcfg:ro
       - ./janus/janus.transport.websockets.jcfg:/usr/local/etc/janus/janus.transport.websockets.jcfg:ro
+
+  scraper:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./scraper
+    env_file:
+      - ./secrets/scraper/.env
+    volumes:
+      - ./scraper:/usr/src/app
+    command: sh -c "while true; do echo alive; sleep 60; done"
+    depends_on:
+      - api
+      - db
 
 volumes:
   dbdata:

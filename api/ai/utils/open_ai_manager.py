@@ -8,7 +8,7 @@ from core.models import UserModel, ProfileModel
 from ai.utils.ai_manager import BaseAIManager
 
 class OpenAIManager(BaseAIManager):
-    def __init__(self, model, api_key, cur_user=None):
+    def __init__(self, model, api_key, cur_users=[]):
         """
         Initialize the OpenAIManager.
         
@@ -22,7 +22,7 @@ class OpenAIManager(BaseAIManager):
         Example:
             manager = OpenAIManager(model="gpt-4o", api_key="sk-...")
         """
-        super().__init__(ai_type="open_ai", cur_user=cur_user)
+        super().__init__(ai_type="open_ai", cur_users=cur_users)
         self.OPENAI_PRICING = {
             "gpt-3.5-turbo": {
                 "input_per_1k_token": 0.0005,
@@ -137,8 +137,8 @@ class OpenAIManager(BaseAIManager):
         output_price = pricing.get("output_per_1k_token", 0)
         
         cost = (prompt_tokens / 1000) * input_price + (completion_tokens / 1000) * output_price
-        self._apply_cost(cost)
-        
+        self._apply_cost(cost=cost, service="OPEN_AI_COMPLETION")
+
         raw_response = response.choices[0].message.content.strip() if response.choices and response.choices[0].message else ""
         self.clear_messages()
         return self._clean_code_block(raw_response)
@@ -212,7 +212,7 @@ class OpenAIManager(BaseAIManager):
         pricing = self.OPENAI_PRICING.get("whisper", {})
         input_price = pricing.get("audio_stt_per_1_minute", 0)
         cost = duration_minutes * input_price
-        self._apply_cost(cost)
+        self._apply_cost(cost=cost, service="OPEN_AI_STT")
         if response_format == "text":
             return response
         elif response_format == "json":
@@ -255,7 +255,7 @@ class OpenAIManager(BaseAIManager):
             input_price = pricing.get("tts_standard_per_1k_char", 0)
         char_count = len(text)
         cost = (char_count / 1000) * input_price
-        self._apply_cost(cost)
+        self._apply_cost(cost=cost, service="OPEN_AI_TTS")
         return response.content
 
     def generate_image(self, prompt, size="1024x1024"):
@@ -283,7 +283,7 @@ class OpenAIManager(BaseAIManager):
         image_bytes = requests.get(image_url).content
         pricing = self.OPENAI_PRICING.get("gpt-4o", {})
         image_price = pricing.get("image_per_1_image", 0)
-        self._apply_cost(image_price)
+        self._apply_cost(cost=image_price)
         return image_bytes
     
     def build_materials_for_rag(self, text, max_chunk_size=1000, embedding_model="text-embedding-3-large", progress_callback=None):
@@ -327,7 +327,7 @@ class OpenAIManager(BaseAIManager):
                 pricing = self.OPENAI_PRICING.get(embedding_model, {})
                 input_price = pricing.get("input_per_1k_token", 0)
                 cost = (input_tokens / 1000) * input_price
-                self._apply_cost(cost)
+                self._apply_cost(cost=cost, service="OPEN_AI_EMBEDDING")
             except Exception as e:
                 err_msg = f"Error generating embedding: {e}"
                 if progress_callback:

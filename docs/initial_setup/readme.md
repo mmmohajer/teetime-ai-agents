@@ -72,6 +72,7 @@ python -m venv venv
 
 ```bash
 pip install -r api/requirements.txt
+pip install -r scrapy/requirements.txt
 ```
 
 ```bash
@@ -92,8 +93,11 @@ Copy and rename sample `.env` files:
 cp secrets/api/.env.sample secrets/api/.env
 cp secrets/db/.env.sample secrets/db/.env
 cp secrets/pgbouncer/.env.sample secrets/pgbouncer/.env
+cp secrets/scraper/.env.sample secrets/scraper/.env
 cp redis/redis.conf.sample redis/redis.conf
 cp client/next.config.sample.js client/next.config.js
+cp janus/janus.jcfg.sample janus.jcfg
+touch secrets/secret_files/cred.json
 ```
 
 **If not using Docker:**

@@ -769,6 +769,7 @@ This section covers initializing the Swarm, onboarding worker and manager nodes,
    - API
    - NGINX
    - Janus
+   - Scraper
 
 3. Update repository references:
 

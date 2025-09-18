@@ -1,0 +1,7 @@
+from customer_support.models import knowledge_base, conversation
+
+CustomerSupportKnowledgeBaseModel = knowledge_base.CustomerSupportKnowledgeBase
+CustomerSupportKnowledgeBaseChunkModel = knowledge_base.CustomerSupportKnowledgeBaseChunk
+ZohoDeskTicketModel = knowledge_base.ZohoDeskTicket
+
+CustomerSupportConversationModel = conversation.CustomerSupportPhoneCall

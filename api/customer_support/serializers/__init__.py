@@ -1,0 +1,3 @@
+from customer_support.serializers import knowledge_base
+
+KnowledgeBaseSerializer = knowledge_base.KnowledgeBaseSerializer

@@ -1,0 +1,10 @@
+from django.contrib import admin
+
+from customer_support.models import CustomerSupportKnowledgeBaseModel, CustomerSupportKnowledgeBaseChunkModel, ZohoDeskTicketModel, CustomerSupportConversationModel
+from customer_support.admin import knowledge_base, conversation
+
+admin.site.register(CustomerSupportKnowledgeBaseModel, knowledge_base.CustomerSupportKnowledgeBaseModelAdmin)
+admin.site.register(CustomerSupportKnowledgeBaseChunkModel, knowledge_base.CustomerSupportKnowledgeBaseChunkModelAdmin)
+admin.site.register(ZohoDeskTicketModel, knowledge_base.ZohoDeskTicketModelAdmin)
+
+admin.site.register(CustomerSupportConversationModel, conversation.CustomerSupportPhoneCallAdmin)
