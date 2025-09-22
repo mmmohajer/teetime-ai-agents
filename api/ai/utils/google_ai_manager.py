@@ -204,7 +204,7 @@ class GoogleAIManager(BaseAIManager):
             })
         return results
 
-    def tts(self, text, voice_name="en-US-Wavenet-D", audio_encoding=texttospeech.AudioEncoding.MP3, language_code="en-US"):
+    def tts(self, text, voice_name="en-US-Wavenet-D", audio_encoding=texttospeech.AudioEncoding.MP3, language_code="en-US", speaking_rate=1.0):
         """
         Perform text-to-speech using Google Cloud Text-to-Speech API.
 
@@ -228,6 +228,7 @@ class GoogleAIManager(BaseAIManager):
         )
         audio_config = texttospeech.AudioConfig(
             audio_encoding=audio_encoding,
+            speaking_rate=speaking_rate,
         )
         response = client.synthesize_speech(
             input=input_text,
@@ -252,6 +253,7 @@ class GoogleAIManager(BaseAIManager):
         language_code="en-US",
         sample_rate_hz=16000,
         cred_path="/run/secrets/cred.json",
+        speaking_rate=1.0
     ):
         """REST TTS with SSML <mark> timepoints (v1beta1)."""
         # --- Auth
@@ -269,7 +271,7 @@ class GoogleAIManager(BaseAIManager):
         body = {
             "input": {"ssml": ssml},
             "voice": {"languageCode": language_code, "name": voice_name},
-            "audioConfig": {"audioEncoding": audio_encoding, "sampleRateHertz": sample_rate_hz},
+            "audioConfig": {"audioEncoding": audio_encoding, "sampleRateHertz": sample_rate_hz, "speakingRate": speaking_rate},
             "enableTimePointing": ["SSML_MARK"],
         }
 

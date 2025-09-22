@@ -560,5 +560,29 @@ def test_azure_tts():
     print("✅ Saved Persian TTS as azure_fa.mp3")
 
 
+def test_google_advanced_tts():
+    manager = GoogleAIManager(api_key=settings.GOOGLE_API_KEY)
+    text = (
+        """<speak>
+        Hello, Google!
+        <break time="500ms"/>
+        <emphasis level="strong">This is a demonstration of speech synthesis.</emphasis>
+        <break time="300ms"/>
+        <prosody pitch="+2st" rate="slow">You can control pitch and speaking rate with SSML tags.</prosody>
+        <break time="400ms"/>
+        <prosody pitch="-2st" rate="fast">Now, let's try a lower pitch and a faster rate.</prosody>
+        <break time="300ms"/>
+        <emphasis level="moderate">SSML makes your TTS output more expressive!</emphasis>
+        <break time="500ms"/>
+        Thank you for listening.
+        </speak>"""
+    )
+    tts_result = manager.advanced_tts(text=text, speaking_rate=.4)
+    audio_bytes = tts_result["audio_content"] 
+    audio_file_path = os.path.join("/websocket_tmp", 'tts_audio.mp3')
+    with open(audio_file_path, 'wb') as file:
+        file.write(audio_bytes)
+    print(f"Successfully Done")
+
 def test_ai_manager():
-   list_voices()
+   test_google_advanced_tts()

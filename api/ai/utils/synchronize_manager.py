@@ -80,15 +80,15 @@ from ai.utils.azure_manager import AzureManager
 #         }
 
 class SynchronizeManager():
-    def __init__(self, cur_user=None):
+    def __init__(self, cur_users=[]):
         self.openai_manager = OpenAIManager(
             model="gpt-4o",
             api_key=settings.OPEN_AI_SECRET_KEY,
-            cur_user=cur_user
+            cur_users=cur_users
         )
         self.google_manager = GoogleAIManager(
             api_key=settings.GOOGLE_API_KEY,
-            cur_user=cur_user
+            cur_users=cur_users
         )
         self.audio_manager = AudioManager()
         self.azure_manager = AzureManager(

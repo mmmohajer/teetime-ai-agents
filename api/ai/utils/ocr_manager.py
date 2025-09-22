@@ -1,3 +1,4 @@
+from django.conf import settings
 import base64
 from io import BytesIO
 from PIL import Image, ImageEnhance, ImageFilter
@@ -6,14 +7,13 @@ from google.api_core.client_options import ClientOptions
 from pdf2image import convert_from_bytes
 import requests
 from PyPDF2 import PdfReader
-from weasyprint import HTML
 
 from ai.utils.doc_ai_managr import DocAIManager
 from ai.utils.chunk_manager import ChunkPipeline
 from ai.tasks import apply_cost_task
 
 class OCRManager:
-    def __init__(self, google_cloud_project_id, google_cloud_location, google_cloud_processor_id, cur_users=[]):
+    def __init__(self, google_cloud_project_id=settings.GOOGLE_CLOUD_DOCUMENT_AI_PROJECT_ID, google_cloud_location=settings.GOOGLE_CLOUD_DOCUMENT_AI_LOCATION, google_cloud_processor_id=settings.GOOGLE_CLOUD_DOCUMENT_AI_PROCESSOR_ID, cur_users=[]):
         """
         Initializes the OCRManager instance with Google Cloud configuration.
 
@@ -68,20 +68,7 @@ class OCRManager:
         blocks = getattr(layout, "blocks", [])
         doc_ai_manager = DocAIManager()
         return doc_ai_manager.render_html_blocks(blocks)
-
-    def convert_html_to_pdf(self, html_content):
-        """
-        Converts HTML content to PDF bytes.
-
-        Args:
-            html_content (str): HTML content to convert.
-
-        Returns:
-            bytes: PDF file data.
-        """
-        pdf_bytes = HTML(string=html_content).write_pdf()
-        return pdf_bytes
-
+    
     def get_cost(self):
         """
         Returns the current cost of OCR processing.

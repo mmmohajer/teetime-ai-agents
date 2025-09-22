@@ -1,5 +1,7 @@
 import html
 import re
+from bs4 import BeautifulSoup
+from weasyprint import HTML
 
 class DocAIManager:
     """
@@ -188,3 +190,52 @@ class DocAIManager:
                 out.append(self.render_html_blocks(child_blocks))
             i += 1
         return "".join(out)
+    
+    def convert_html_to_pdf(self, html_content):
+        """
+        Converts HTML content to PDF bytes.
+
+        Args:
+            html_content (str): HTML content to convert.
+
+        Returns:
+            bytes: PDF file data.
+        """
+        pdf_bytes = HTML(string=html_content).write_pdf()
+        return pdf_bytes
+
+    def generate_toc(self, html_content):
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        toc_html = ['<div class="toc"><h1>Table of Contents</h1><ul>']
+        prev_level = 1  # assume <h1> is the top-level
+
+        for i, tag in enumerate(soup.find_all([f"h{n}" for n in range(1, 7)])):
+            level = int(tag.name[1])  # 1–6
+            anchor = f"id{i}"
+            tag["id"] = anchor
+
+            # going deeper → open exactly one nested <ul> per level increase
+            while level > prev_level:
+                toc_html.append("<ul>")
+                prev_level += 1
+
+            # going back up → close one <ul> per level decrease
+            while level < prev_level:
+                toc_html.append("</ul>")
+                prev_level -= 1
+
+            # add TOC item with page number placeholder
+            toc_html.append(
+                f'<li><a href="#{anchor}">{tag.get_text()}</a>'
+                f'<span class="toc-page" data-target="#{anchor}"></span></li>'
+            )
+
+        # close remaining open <ul> tags
+        while prev_level > 1:
+            toc_html.append("</ul>")
+            prev_level -= 1
+
+        toc_html.append("</ul></div>")
+
+        return str(soup), "".join(toc_html)

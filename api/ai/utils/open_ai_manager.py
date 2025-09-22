@@ -1,3 +1,4 @@
+from django.conf import settings
 import openai
 import wave
 import contextlib
@@ -8,7 +9,7 @@ from core.models import UserModel, ProfileModel
 from ai.utils.ai_manager import BaseAIManager
 
 class OpenAIManager(BaseAIManager):
-    def __init__(self, model, api_key, cur_users=[]):
+    def __init__(self, model="gpt-4o", api_key=settings.OPEN_AI_SECRET_KEY, cur_users=[]):
         """
         Initialize the OpenAIManager.
         
