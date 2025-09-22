@@ -207,7 +207,7 @@ sudo ufw status verbose
 Then copy from your system to server using:
 
 ```sh
-scp ./utils/shellScripting/funcs/setup_ufw.sh TexVoMaster1:/home/USER_NAME
+scp ./utils/shellScripting/funcs/setup_ufw.sh SERVER_ALIAS:/home/USER_NAME
 ```
 
 Then in the server, run:
