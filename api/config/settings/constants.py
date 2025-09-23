@@ -33,8 +33,6 @@ AUTH_USER_MODEL = 'core.User'
 ADMIN_URL = os.environ.get("ADMIN_URL", "admin")
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # ---------------- END OF GENERAL VARS ----------------
 

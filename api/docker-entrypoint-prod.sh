@@ -6,4 +6,4 @@ python manage.py collectstatic --noinput
 
 python manage.py migrate --noinput
 
-uwsgi --socket :8000 --workers 4 --threads 2 --master --enable-threads --module config.wsgi
+uwsgi --socket :8000 --workers 4 --threads 2 --master --enable-threads --module config.wsgi --env HTTPS=on
