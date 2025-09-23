@@ -71,8 +71,8 @@ class TwilioVoiceWebhookViewSet(views.APIView):
         print(f"Validator: {validator}")
         signature = request.headers.get("X-Twilio-Signature", "")
         url = request.build_absolute_uri()
-        if url == "http://ai.teetimegolfpass.com":
-            url = "https://ai.teetimegolfpass.com"
+        if url.startswith("http://ai.teetimegolfpass.com"):
+            url = url.replace("http://", "https://", 1)
         print(f"URL: {url}")
         params = request.POST.dict()
         return validator.validate(url, params, signature)
