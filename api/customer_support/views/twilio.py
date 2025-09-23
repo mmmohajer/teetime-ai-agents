@@ -64,11 +64,14 @@ class TwilioVoiceWebhookViewSet(views.APIView):
             bool: True if the request is valid, False otherwise.
         """
         token = getattr(settings, "TWILIO_ACCOUNT_AUTH_TOKEN", None)
+        print(f"Token: {token}")
         if not token:
             return False
         validator = RequestValidator(token)
+        print(f"Validator: {validator}")
         signature = request.headers.get("X-Twilio-Signature", "")
         url = request.build_absolute_uri()
+        print(f"URL: {url}")
         params = request.POST.dict()
         return validator.validate(url, params, signature)
 
