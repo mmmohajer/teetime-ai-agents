@@ -29,12 +29,15 @@ def process_ai_response(call_sid, user_message):
         backend_response = requests.post(API_URL, json=payload, timeout=120).json() or {}
         bot_message = backend_response.get("bot_message") or ""
         if isinstance(bot_message, str):
-            try:
-                parsed = json.loads(bot_message)
-                if isinstance(parsed, dict) and "message_to_user" in parsed:
-                    bot_message = parsed["message_to_user"]
-            except Exception:
-                pass
+            while True:
+                try:
+                    parsed = json.loads(bot_message)
+                    if isinstance(parsed, dict) and "message_to_user" in parsed:
+                        bot_message = parsed["message_to_user"]
+                        continue  # keep unwrapping
+                    break
+                except Exception:
+                    break
         agent = TeeTimeSupportAgent(call_sid)
         audio_url = agent.generate_bot_message(bot_message) if bot_message else None
         cache.set(f"{call_sid}_ai_response", {"text": bot_message, "audio_url": audio_url}, timeout=3600)
