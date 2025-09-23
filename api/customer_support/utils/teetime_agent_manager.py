@@ -205,7 +205,7 @@ class TeeTimeSupportAgent:
     # ----------------------
     # Core model call
     # ----------------------
-    def _model_decide(self, max_tokens=1000):
+    def _model_decide(self, max_tokens=500):
         """
         Builds the prompt, sends it to the AI model, parses and normalizes the response.
 
